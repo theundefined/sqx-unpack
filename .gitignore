@@ -1,0 +1,7 @@
+/target
+/prototype
+/reference
+*.spq
+*.sqx
+*.bak
+/HANDOFF.md

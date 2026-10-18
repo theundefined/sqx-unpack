@@ -1,0 +1,12 @@
+[package]
+name = "sqx-unpack"
+version = "0.0.1"
+edition = "2021"
+description = "Open-source extractor for SQX (Squeez / SpeedCommander) archives"
+license = "GPL-3.0-or-later"
+repository = "https://github.com/theundefined/sqx-unpack"
+
+[dependencies]
+
+[profile.release]
+opt-level = 3
