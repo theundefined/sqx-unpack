@@ -9,6 +9,17 @@ fn usage() -> ! {
 
 fn main() {
     let args: Vec<String> = std::env::args().skip(1).collect();
+    match args.first().map(String::as_str) {
+        Some("-h" | "--help") => {
+            println!("usage: sqx l ARCHIVE\n       sqx t ARCHIVE\n       sqx x ARCHIVE [DIR]");
+            return;
+        }
+        Some("-V" | "--version") => {
+            println!("sqx {}", env!("CARGO_PKG_VERSION"));
+            return;
+        }
+        _ => {}
+    }
     if args.len() < 2 {
         usage();
     }
