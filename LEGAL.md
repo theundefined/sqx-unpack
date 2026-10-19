@@ -50,6 +50,13 @@ maintainer, and role A's prose description (a few formulas and small constants) 
 the prototype. The two initial tables are the only vendor-specific numeric data in the code;
 they are functional facts required for interoperability.
 
+## Other implementations
+After this project was started we found other public work on the format, notably
+[Squeez-c](https://github.com/seb3773/Squeez-c) (MIT). `sqx-unpack` was developed independently
+of it; we did not read its source. A third-party repository that hosts the original
+vendor SDK also exists; we did **not** use it. Squeez-c's test archives (not included in this repo) were used
+only as an additional correctness check of our decoder.
+
 ## Test data
 Only synthetic data is committed. Private or production archives are never committed.
 If you believe something in this repository should not be here, open an issue
