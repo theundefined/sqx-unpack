@@ -1,0 +1,23 @@
+[build-system]
+requires = ["maturin>=1.5,<2.0"]
+build-backend = "maturin"
+
+[project]
+name = "sqx-unpack"
+description = "Open-source extractor for SQX (Squeez / SpeedCommander) archives"
+readme = "README.md"
+requires-python = ">=3.8"
+license = { text = "GPL-3.0-or-later" }
+dynamic = ["version"]
+classifiers = [
+    "Environment :: Console",
+    "Topic :: System :: Archiving :: Compression",
+    "Programming Language :: Rust",
+]
+
+[project.urls]
+Repository = "https://github.com/theundefined/sqx-unpack"
+
+[tool.maturin]
+# Ship the Rust binary (`sqx`) as a console tool; no Python bindings.
+bindings = "bin"
