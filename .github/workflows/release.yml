@@ -6,6 +6,9 @@ on:
       - 'v*'
 
 jobs:
+  test:
+    uses: ./.github/workflows/ci.yml
+
   wheels:
     runs-on: ${{ matrix.os }}
     strategy:
@@ -43,9 +46,35 @@ jobs:
           name: sdist
           path: dist
 
+  # Install each built wheel into a fresh venv and run it, before publishing.
+  # aarch64 Linux is cross-built and not executed (no native runner).
+  smoke:
+    needs: [wheels]
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { os: ubuntu-latest, artifact: wheels-ubuntu-latest-x86_64 }
+          - { os: windows-latest, artifact: wheels-windows-latest-x64 }
+          - { os: macos-15-intel, artifact: wheels-macos-15-intel-x86_64 }
+          - { os: macos-latest, artifact: wheels-macos-latest-aarch64 }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - uses: actions/download-artifact@v4
+        with:
+          name: ${{ matrix.artifact }}
+          path: dist
+      - name: Smoke test wheel
+        shell: bash
+        run: bash scripts/smoke.sh dist
+
   publish-pypi:
     runs-on: ubuntu-latest
-    needs: [wheels, sdist]
+    needs: [test, wheels, sdist, smoke]
     permissions:
       id-token: write # PyPI trusted publishing
     steps:

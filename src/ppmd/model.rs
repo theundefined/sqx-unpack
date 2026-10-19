@@ -104,7 +104,7 @@ pub struct Model {
 
 impl Model {
     /// `mem_size` bytes of model memory, contexts up to `max_order` bytes.
-    #[cfg(test)]
+    #[cfg(any(test, feature = "encoder"))]
     pub fn new(mem_size: u32, max_order: u32) -> Model {
         Model::new_with(mem_size, max_order, false)
     }
@@ -932,5 +932,7 @@ fn get_mean(prob: u32) -> u32 {
 #[allow(dead_code)]
 const _: usize = NUM_INDEXES;
 
+#[cfg(any(test, feature = "encoder"))]
+mod encoder;
 #[cfg(test)]
 mod tests;

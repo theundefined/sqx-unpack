@@ -113,8 +113,8 @@ impl<'a> RangeDecoder<'a> {
     }
 }
 
-/// Reference encoder, only used by the unit tests to produce synthetic streams.
-#[cfg(test)]
+/// Reference encoder, only used by the unit tests / `encoder` feature to produce synthetic streams.
+#[cfg(any(test, feature = "encoder"))]
 pub struct RangeEncoder {
     low: u32,
     range: u32,
@@ -122,7 +122,7 @@ pub struct RangeEncoder {
     bot: u32,
 }
 
-#[cfg(test)]
+#[cfg(any(test, feature = "encoder"))]
 impl RangeEncoder {
     pub fn new(bot: u32) -> Self {
         RangeEncoder { low: 0, range: u32::MAX, out: Vec::new(), bot }

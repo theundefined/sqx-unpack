@@ -16,3 +16,11 @@ lto = true
 [[bin]]
 name = "sqx"
 path = "src/main.rs"
+
+[features]
+# Test-data encoder (examples/mkarchive.rs); not needed for extraction.
+encoder = []
+
+[[example]]
+name = "mkarchive"
+required-features = ["encoder"]

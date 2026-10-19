@@ -4,8 +4,14 @@ Status: partial. Only what has been observed and verified on real archives is li
 All integers are little-endian.
 
 ## Main header
-Starts with bytes `50 xx xx 52`; the string `-sqx-` is at offset 7. `u16` at offset 5 is the
-main header size. Following blocks start right after it.
+Same block layout as below (`u16 crc16, u8 type = 'R', u16 flags, u16 size`); the string `-sqx-` is at
+offset 7 and the next byte is the version (0x0b in samples). `u16` at offset 5 is the main header size
+(25 in samples). Following blocks start right after it.
+
+Header CRC16 (determined by analysing the vendor's SFX stub for interoperability, see LEGAL.md; not
+checked by this extractor): the low 16 bits of the raw CRC-32 (init `0xFFFFFFFF`, no final inversion, i.e.
+`!crc32(bytes)`) of the header bytes from the type byte (offset 2) to the end of the header.
+`examples/mkarchive.rs` writes it this way.
 
 ## Blocks
 Each block starts with `u16 crc16, u8 type, u16 flags, u16 header_size`.

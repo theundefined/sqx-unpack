@@ -5,3 +5,4 @@
 *.sqx
 *.bak
 /HANDOFF.md
+!/tests/data/*.sqx

@@ -114,3 +114,25 @@ fn decode_with<W: Write>(rc: &mut RangeDecoder, p: Params, out_len: u64, w: &mut
     Ok(rc.consumed())
 }
 
+
+/// Encode `data` as one SQX method 6 entry stream (fresh model, `order`,
+/// `mem_mb` MB of model memory).  Test/example helper behind the `encoder`
+/// feature; the inverse of [`decode_sqx`].
+#[cfg(feature = "encoder")]
+pub fn encode_sqx(data: &[u8], order: u32, mem_mb: u32) -> Vec<u8> {
+    let mut rc = rangecoder::RangeEncoder::new(rangecoder::BOT);
+    let mut put_bits = |v: u32, n: u32| {
+        for i in (0..n).rev() {
+            rc.scale(2);
+            rc.encode((v >> i) & 1, 1);
+        }
+    };
+    put_bits(0, 1);
+    put_bits(order, 8);
+    put_bits(mem_mb, 10);
+    let mut m = Model::new(mem_mb << 20, order);
+    for &b in data {
+        m.encode_symbol(&mut rc, b);
+    }
+    rc.finish()
+}
