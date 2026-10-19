@@ -10,3 +10,9 @@ repository = "https://github.com/theundefined/sqx-unpack"
 
 [profile.release]
 opt-level = 3
+codegen-units = 1
+lto = true
+
+[[bin]]
+name = "sqx"
+path = "src/main.rs"
